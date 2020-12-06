@@ -33,29 +33,58 @@ body{
     flex-direction: column;
 }
 
-/* Style de la l'ensemble des journées prise en compte de la météo */
-#weatherList{
+
+/* style du conteneur de la météo principale */
+#target0{
     margin-top: 5rem;
 
-    display:none;
+    display:flex;
     align-items:center;
     flex-direction:row;
     justify-content: space-around;
     flex-wrap: wrap;
-
 }
-
-/* Style des journées de la météo */
-#weather0, #weather1, #weather2{
+/* Style des journées de la météo principale*/
+#weather00,#weather01,#weather02 {
     padding:2rem 4rem;
     min-width: auto;
     min-height:auto;
     background-color: rgba(0, 119, 255, 0.719);
-
     border-radius: 10% / 50%;
     text-align: center;
     
 }
+
+/* Style de la l'ensemble des journées prise en compte de la météo */
+#weatherList{
+    margin-top: 5rem;
+
+    display:flex;
+    align-items:center;
+    flex-direction:row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    border-radius: 10% / 50%;
+
+}
+
+
+/* style de la météo avancée */
+
+#weather10, #weather11, #weather12, #weather13, #weather14, #weather15, #weather16, #weather17, #weather18, #weather19 ,
+#weather20, #weather21, #weather22, #weather23, #weather24, #weather25, #weather26, #weather27, #weather28, #weather29,
+#weather30, #weather31, #weather32, #weather33, #weather34, #weather35, #weather36, #weather37, #weather38, #weather39
+{
+
+    padding:2rem 4rem;
+    min-width: auto;
+    min-height:auto;
+    background-color: rgba(0, 119, 255, 0.719);
+    text-align: center;
+
+}
+
 
 
 /* Style des informations de la requêtes */

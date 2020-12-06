@@ -45,8 +45,11 @@ class ConnectorToAPIOpenWeather
      */
     private function createURL()
 
+
     {
         $city = str_replace(" ", "-", $this->cityName);
+
+
         return 'api.openweathermap.org/data/2.5/forecast?q=' . $city . '&units=metric&lang=fr&appid=' . $this->apiKey;
     }
 
@@ -94,7 +97,7 @@ class ConnectorToAPIOpenWeather
      * A data Filter Function.
      * 
      * It take and decode the OpenWeatherApi response, and Filter the useful datas.
-     * 
+     * It contain 2 loop, the first one fill the simple meteo, the second one fill the advanced meteo 3 hour by 3 hour
      * @access  private
      * @param   json       $dataAPI       API response
      * 
@@ -114,8 +117,9 @@ class ConnectorToAPIOpenWeather
         $dataFiltered["hourFRNow"] = $hourNow;
         $dataFiltered["city"] = $this->cityName;
 
+        //the first loop
         for ($day = 0, $h24 = 0; $day <= 2; $day++, $h24 = $h24 + 8) {
-            $dataFiltered[strval($day)] = [
+            $dataFiltered[0][strval($day)] = [
                 "day" => $this->formatDate($response->list[$h24]->dt_txt)[0],
                 "hour" => $this->formatDate($response->list[$h24]->dt_txt)[1],
                 "temp" => $response->list[$h24]->main->temp,
@@ -125,6 +129,39 @@ class ConnectorToAPIOpenWeather
                 "feel_like" => $response->list[$h24]->main->feels_like,
                 "weather" => $response->list[$h24]->weather[0]->description,
             ];
+        }
+        //the second loop
+        for ($apiIndex = 0, $JsonRootIndex = 10, $JsonSecondIndex = 0; $apiIndex <= 32; $apiIndex++) {
+
+            if ($this->formatDate($response->list[$apiIndex]->dt_txt)[1] != "00:00:00") {
+
+                $JsonSecondIndex++;
+                $dataFiltered[strval($JsonRootIndex)][$JsonSecondIndex] = [
+
+                    "day" => $this->formatDate($response->list[$apiIndex]->dt_txt)[0],
+                    "hour" => $this->formatDate($response->list[$apiIndex]->dt_txt)[1],
+                    "temp" => $response->list[$apiIndex]->main->temp,
+                    "temp_min" => $response->list[$apiIndex]->main->temp_min,
+                    "temp_max" => $response->list[$apiIndex]->main->temp_max,
+                    "pressure" => $response->list[$apiIndex]->main->pressure,
+                    "feel_like" => $response->list[$apiIndex]->main->feels_like,
+                    "weather" => $response->list[$apiIndex]->weather[0]->description,
+                ];
+            } else {
+                $JsonSecondIndex = 0;
+                $JsonRootIndex = $JsonRootIndex + 10;
+                $dataFiltered[strval($JsonRootIndex)][$JsonSecondIndex] = [
+
+                    "day" => $this->formatDate($response->list[$apiIndex]->dt_txt)[0],
+                    "hour" => $this->formatDate($response->list[$apiIndex]->dt_txt)[1],
+                    "temp" => $response->list[$apiIndex]->main->temp,
+                    "temp_min" => $response->list[$apiIndex]->main->temp_min,
+                    "temp_max" => $response->list[$apiIndex]->main->temp_max,
+                    "pressure" => $response->list[$apiIndex]->main->pressure,
+                    "feel_like" => $response->list[$apiIndex]->main->feels_like,
+                    "weather" => $response->list[$apiIndex]->weather[0]->description,
+                ];
+            }
         }
         return json_encode($dataFiltered);
     }
