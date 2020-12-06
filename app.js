@@ -24,7 +24,7 @@ cityForm.addEventListener("submit", function (e) {
     // Management of status code
 
     xhr.onreadystatechange = function () {
-        console.log(this)
+
         if (this.readyState === 4) {
 
             switch (this.status) {
